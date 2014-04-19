@@ -27,7 +27,6 @@ class GUI(threading.Thread):
         self.initText()
         self.initCommand()
         
-        
         self.start()
         
     def run(self):
@@ -35,10 +34,10 @@ class GUI(threading.Thread):
         self.fenetre.mainloop()
         
     def initLog(self):
+        
         """
         Log
         """
-        
         self.logbox = Frame(self.fenetre)
         self.logbox.pack(side="top", expand=True, fill="x", padx=10)
         
@@ -204,6 +203,7 @@ class GUI(threading.Thread):
             
             self.Manager.saveArticle(self.Article.cget("value"), listInfo)
             self.Refresh()
+            self.Article.configure(value=self.heading.get())
         else:
             pass
         

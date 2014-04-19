@@ -5,9 +5,6 @@ Created on 15 avr. 2014
 '''
 
 class Article():
-    '''
-    classdocs
-    '''
 
     def __init__(self):
         
