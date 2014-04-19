@@ -54,7 +54,8 @@ class XMLManager():
                 self.ArticleList[listInfo[0]].setShortText(listInfo[1])
                 self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
                 self.ArticleList[listInfo[0]].setText(listInfo[3])
-            
+                
+                self.refreshHome()
                 return True
             
             else:
@@ -71,6 +72,7 @@ class XMLManager():
             self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
             self.ArticleList[listInfo[0]].setText(listInfo[3])
             
+            self.refreshHome()
             return True
         
         # Simple Modification
@@ -79,10 +81,9 @@ class XMLManager():
             self.ArticleList[article].setThumbnail(listInfo[2])
             self.ArticleList[article].setText(listInfo[3])
             
+            self.refreshHome()
             return True
-        
-        self.refreshHome()
-    
+            
     def refreshHome(self):
         
         xml = self.generateXML()
