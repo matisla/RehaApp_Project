@@ -47,14 +47,19 @@ class XMLManager():
             
         # New
         if listInfo[0] != article and article == "":
+            if listInfo[0] not in self.ArticleList:
+                self.ArticleList[listInfo[0]] = Article()
+                
+                self.ArticleList[listInfo[0]].setHeading(listInfo[0])
+                self.ArticleList[listInfo[0]].setShortText(listInfo[1])
+                self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
+                self.ArticleList[listInfo[0]].setText(listInfo[3])
             
-            self.ArticleList[listInfo[0]] = Article()
+                return True
             
-            self.ArticleList[listInfo[0]].setHeading(listInfo[0])
-            self.ArticleList[listInfo[0]].setShortText(listInfo[1])
-            self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
-            self.ArticleList[listInfo[0]].setText(listInfo[3])
-            
+            else:
+                return False
+        
         # Heading change
         elif listInfo[0] != article and article != "":
             
@@ -65,12 +70,16 @@ class XMLManager():
             self.ArticleList[listInfo[0]].setShortText(listInfo[1])
             self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
             self.ArticleList[listInfo[0]].setText(listInfo[3])
+            
+            return True
         
         # Simple Modification
         else:
             self.ArticleList[article].setShortText(listInfo[1])
             self.ArticleList[article].setThumbnail(listInfo[2])
             self.ArticleList[article].setText(listInfo[3])
+            
+            return True
         
         self.refreshHome()
     

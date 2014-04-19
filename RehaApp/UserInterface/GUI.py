@@ -18,8 +18,8 @@ class GUI(threading.Thread):
         
         self.fenetre = Tk()
         self.fenetre.title("RehaApp")
-        self.fenetre.geometry("600x400")
-        self.fenetre.minsize(450,400)
+        self.fenetre.geometry("600x450")
+        self.fenetre.minsize(450,450)
         
         self.initLog()
         self.initArticle()
@@ -39,10 +39,15 @@ class GUI(threading.Thread):
         Log
         """
         self.logbox = Frame(self.fenetre)
-        self.logbox.pack(side="top", expand=True, fill="x", padx=10)
+        self.logbox.pack(side="top", expand=True, fill="x", padx=10, pady=10)
         
-        self.log = Label(self.logbox, text="Welcome to RehaApp", anchor="w")
-        self.log.pack()
+        empty = Label(self.logbox, width=11)
+        empty.pack(side="left")
+        
+        self.varLog = StringVar()
+        self.varLog.set("Welcome to RehaApp")
+        self.log = Label(self.logbox, textvariable=self.varLog, justify="left")
+        self.log.pack(side="left")
     
     def initArticle(self):
         
@@ -184,11 +189,14 @@ class GUI(threading.Thread):
                 
     def New(self):
         self.ClearAll()
+        self.varLog.set("do not use an existant Heading")
         
     def Remove(self):
         if self.Article.cget("value") != "":
-            self.Manager.rmArticle(self.Article.cget("value"))
+            article = self.Article.cget("value")
+            self.Manager.rmArticle(article)
             
+            self.varLog.set('the Article "%s" has been removed' %(article))
             self.Refresh()
             self.ClearAll()
             
@@ -201,9 +209,17 @@ class GUI(threading.Thread):
             listInfo.append(self.shortText.get())
             listInfo.append(self.text.get("1.0", END))
             
-            self.Manager.saveArticle(self.Article.cget("value"), listInfo)
-            self.Refresh()
-            self.Article.configure(value=self.heading.get())
+            article = self.Article.cget("value")
+            
+            if self.Manager.saveArticle(article, listInfo):
+                self.Refresh()
+                self.Article.configure(value=self.heading.get())
+                self.varLog.set('the Article "%s" has been saved succesfully' %(listInfo[0]))
+                
+            else:
+                self.heading.focus()
+                self.varLog.set("[Error] this Article Already exists")
+            
         else:
             pass
         
