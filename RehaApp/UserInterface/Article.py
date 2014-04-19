@@ -9,25 +9,21 @@ class Article():
     classdocs
     '''
 
-    def __init__(self, nom, head="None", describe="None", nail="None", txt="write a message here"):
+    def __init__(self):
         
-        self.name      = nom
-        self.heading   = head
-        self.shortText = describe
-        self.thumbnail = nail
-        self.text = txt
+        self.heading   = "heading"
+        self.shortText = "ShortText"
+        self.thumbnail = "Tumbnail"
+        self.text      = "Text"
+
+
         
+    def getList(self):
+        return[self.heading, self.shortText, self.thumbnail, self.text]
         
-    def Save(self):
-        print("Sauvegarde")
-       
-    
     """
     Getter
     """
-    def getName(self):
-        return self.name
-    
     def getHeading(self):
         return self.heading
 
@@ -43,9 +39,6 @@ class Article():
     """
     Setter
     """
-    def setName(self, value):
-        self.name = value
-        
     def setHeading(self, value):
         self.heading = value
 

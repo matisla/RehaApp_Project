@@ -2,31 +2,31 @@ import threading
 from tkinter import *
 from tkinter.tix import *
 
-from Article import Article
 from XMLManager import XMLManager
 
-class UserInterface(threading.Thread):
+class GUI(threading.Thread):
     
     def __init__(self, manag, Debug=False):
         
         self.debug = Debug
-        self.xmlManager = manag
+        self.Manager = manag
         
-        self.ArticleList = self.xmlManager.getArticleName()
-        
-        self.info = []
+        self.ArticleList = self.Manager.getAllArticle()
         
         threading.Thread.__init__(self)
         self.setName("GUI")
         
         self.fenetre = Tk()
         self.fenetre.title("RehaApp")
+        self.fenetre.geometry("600x400")
+        self.fenetre.minsize(450,400)
         
         self.initLog()
         self.initArticle()
         self.initCategorie()
-        self.initCommand()
         self.initText()
+        self.initCommand()
+        
         
         self.start()
         
@@ -53,12 +53,13 @@ class UserInterface(threading.Thread):
         self.articlebox = Frame(self.fenetre)
         self.articlebox.pack(side="top", expand=True, fill="x", padx=19, pady=10)
         
-        self.Article = ComboBox(self.articlebox, editable=True)
+        self.Article = ComboBox(self.articlebox, editable=False)
         self.Article.configure(command=lambda x: self.Selection())
         self.Article.pack(anchor="w", expand=True, fill="x")
         
-        for x in self.ArticleList:
-            self.Article.insert(END, x)
+        if self.ArticleList != []:
+            for x in self.ArticleList:
+                self.Article.insert(END, x)
         
         self.Article.subwidget("label").configure(text="Article", width=10, anchor="w")
         
@@ -72,12 +73,14 @@ class UserInterface(threading.Thread):
         
         self.categoriebox.pack(side="top", expand=True, fill="x", padx=10)
         self.headingbox.pack(  side="top", expand=True, fill="x", padx=10, pady=5)
-        self.thumbnailbox.pack(side="top", expand=True, fill="x", padx=10, pady=5)
         self.shortTextbox.pack(side="top", expand=True, fill="x", padx=10, pady=5)
+        self.thumbnailbox.pack(side="top", expand=True, fill="x", padx=10, pady=5)
+        
         
         self.initHeading(self.headingbox)
-        self.initThumbnail(self.thumbnailbox)
         self.initShortText(self.shortTextbox)
+        self.initThumbnail(self.thumbnailbox)
+        
       
     def initHeading(self, box):
         
@@ -91,8 +94,6 @@ class UserInterface(threading.Thread):
         self.heading = Entry(box, textvariable=self.varHeading)
         self.heading.pack(side="right", expand=True, fill="x")
         
-        self.info.append(self.heading)
-        
     def initThumbnail(self, box):
         
         """
@@ -105,8 +106,6 @@ class UserInterface(threading.Thread):
         self.thumbnail = Entry(box, textvariable=self.varThumbnail)
         self.thumbnail.pack(side="right", expand=True, fill="x")
         
-        self.info.append(self.thumbnail)
-    
     def initShortText(self, box):
         
         """
@@ -118,8 +117,6 @@ class UserInterface(threading.Thread):
         self.varShortText = StringVar()
         self.shortText = Entry(box, textvariable=self.varShortText)
         self.shortText.pack(side="right", expand=True, fill="x")
-        
-        self.info.append(self.shortText)
             
     def initText(self):
         
@@ -146,68 +143,90 @@ class UserInterface(threading.Thread):
         Save
         """
         self.cmdbox = Frame(self.fenetre)
-        self.cmdbox.pack(side="bottom", expand=True, fill="x", padx=10, pady=20)
+        self.cmdbox.pack(side="bottom", expand=True, fill="x", padx=20, pady=20)
         
-        self.labEmpty = Label(self.cmdbox, text="", width=11)
+        self.labEmpty = Label(self.cmdbox, text="", width=10)
         self.labEmpty.pack(side="left")
-        
-        self.btSave = Button(self.cmdbox, text="Save", width=10)
-        self.btSave.config(command=lambda: self.Save())
-        self.btSave.pack(side="left")
         
         self.btNew = Button(self.cmdbox, text="New", width=10)
         self.btNew.config(command=lambda: self.New())
         self.btNew.pack(side="left")
         
+        self.labEmpty2 = Label(self.cmdbox, text="", width=5)
+        self.labEmpty2.pack(side="left")
+        
         self.btRemove  = Button(self.cmdbox, text="Remove", width=10)
         self.btRemove.config(command=lambda: self.Remove())
         self.btRemove.pack(side="left")
         
+        self.labEmpty3 = Label(self.cmdbox, text="", width=5)
+        self.labEmpty3.pack(side="left")
+        
+        self.btSave = Button(self.cmdbox, text="Save", width=10)
+        self.btSave.config(command=lambda: self.Save())
+        self.btSave.pack(side="right")
+        
     
     def Selection(self):
         
-        listInfo = self.xmlManager.getInfo(self.Article.cget("value"))
-        
-        for element, info in zip(self.info, listInfo):
-            element.delete(0,END)
-            element.insert(INSERT, info)
-        
-        if self.text.get("1.0", END) != "":
-            self.text.delete("1.0", END)
-        self.text.insert(INSERT, listInfo[3])
+        if self.Article.cget("value") != "":
             
+            element = self.Manager.getArticle(self.Article.cget("value"))
+            
+            self.Clear()
+            
+            self.heading.insert(  INSERT, element[0])
+            self.shortText.insert(INSERT, element[1])
+            self.thumbnail.insert(INSERT, element[2])
+            self.text.insert(     INSERT, element[3])
+        
+        else:
+            pass
+                
     def New(self):
-        self.xmlManager.newArticle(self.Article.cget("selection"))
-        self.Refresh()
+        self.ClearAll()
         
     def Remove(self):
-        if self.Article.cget("selection") != "":
-            article = self.Article.cget("value")
-            self.xmlManager.removeArticle(article)
+        if self.Article.cget("value") != "":
+            self.Manager.rmArticle(self.Article.cget("value"))
             
             self.Refresh()
-            self.Article.configure(selection="")
-            for x in self.info:
-                x.delete(0,END)
-            self.text.delete("1.0", END)
+            self.ClearAll()
             
     def Save(self):
-        if self.Article.cget("selection") != "":
+        if self.heading.get() != "":
             listInfo = []
-            listInfo.append(self.Article.cget("selection"))
+            
             listInfo.append(self.heading.get())
             listInfo.append(self.thumbnail.get())
             listInfo.append(self.shortText.get())
             listInfo.append(self.text.get("1.0", END))
             
-            self.xmlManager.Save(self.Article.cget("value"), listInfo)        
-        
+            self.Manager.saveArticle(self.Article.cget("value"), listInfo)
+            self.Refresh()
+        else:
+            pass
         
     def Refresh(self):
-        listName = self.xmlManager.getArticleName()
+        listName = self.Manager.getAllArticle()
         self.Article.subwidget("listbox").delete(0,END)
-        for x in listName:
-            self.Article.insert(END, x)
         
+        if listName != "":
+            for x in listName:
+                self.Article.insert(END, x)
+        
+    def ClearAll(self):
+        self.Article.configure(value="", selection="")
+        self.heading.delete(0, END)
+        self.shortText.delete(0,END)
+        self.thumbnail.delete(0, END)
+        self.text.delete("1.0", END)
+        
+    def Clear(self):
+        self.heading.delete(0, END)
+        self.shortText.delete(0,END)
+        self.thumbnail.delete(0, END)
+        self.text.delete("1.0", END)
+            
 if __name__ == '__main__':
-    test = UserInterface(Debug=True)
+    test = GUI(Debug=True, manag=None)

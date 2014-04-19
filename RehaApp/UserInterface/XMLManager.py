@@ -4,8 +4,9 @@ Created on 11 avr. 2014
 @author: Matthieu
 '''
 
-from xml.dom import *
+from xml.dom.minidom import Document, parse
 from Article import Article
+from test.test_minidom import MinidomTest
 
 class XMLManager():
     '''
@@ -13,62 +14,154 @@ class XMLManager():
     '''
 
 
-    def __init__(self, documents=None):
-        '''
-        Constructor
-        '''
+    def __init__(self, documents=None, Debug=False):
+        
+        self.debug = Debug
         
         self.ArticleList = {}
+
+        self.Read()
+
+    def getAllArticle(self):
+        ArticleList = []
         
-        for x in ["titre 1", "titre 2", "titre 3"]:
-            element = Article(x, "head "+x, "short "+x, "thumbnail "+x, "text "+x)
-            self.ArticleList[x] = element
+        if self.ArticleList != {}:
+            for x in self.ArticleList.values():
+                ArticleList.append(x.getHeading())
+            
+            try: 
+                ArticleList.sort()
+            except:
+                pass
         
-        
-        """self.file = minidom.parse(documents)
-        self.article = self.file.getElementsByTagName("Article")
-        
-        self.title = []
-        for tit in self.article:
-            self.title.append(tit.childNodes())"""
-        
-        
-    def getArticleName(self):
-        listName = []
-        for x in self.ArticleList.values():
-            listName.append(x.getName())
-        listName.sort()
-        return listName
+        return ArticleList
     
-    def getInfo(self, article):
-        listInfo = []
-        listInfo.append(self.ArticleList[article].getHeading())
-        listInfo.append(self.ArticleList[article].getThumbnail())
-        listInfo.append(self.ArticleList[article].getShortText())
-        listInfo.append(self.ArticleList[article].getText())
-        return listInfo
-    
-    def newArticle(self, articleName):
-        element = Article(articleName)
-        self.ArticleList[articleName] = element
+    def getArticle(self, article):
+        return self.ArticleList[article].getList()
         
-    def removeArticle(self, article):
+    def rmArticle(self, article):
         del self.ArticleList[article]
+        self.refreshHome()
         
-    def Save(self, article, listInfo):
-        self.ArticleList[article].setName(listInfo[0])
-        self.ArticleList[article].setHeading(listInfo[1])
-        self.ArticleList[article].setThumbnail(listInfo[2])
-        self.ArticleList[article].setShortText(listInfo[3])
-        self.ArticleList[article].setText(listInfo[3])
+    def saveArticle(self, article, listInfo):
+            
+        # New
+        if listInfo[0] != article and article == "":
+            
+            self.ArticleList[listInfo[0]] = Article()
+            
+            self.ArticleList[listInfo[0]].setHeading(listInfo[0])
+            self.ArticleList[listInfo[0]].setShortText(listInfo[1])
+            self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
+            self.ArticleList[listInfo[0]].setText(listInfo[3])
+            
+        # Heading change
+        elif listInfo[0] != article and article != "":
+            
+            self.ArticleList[listInfo[0]] = self.ArticleList[article]
+            del self.ArticleList[article]
+            
+            self.ArticleList[listInfo[0]].setHeading(listInfo[0])
+            self.ArticleList[listInfo[0]].setShortText(listInfo[1])
+            self.ArticleList[listInfo[0]].setThumbnail(listInfo[2])
+            self.ArticleList[listInfo[0]].setText(listInfo[3])
         
-        self.SaveXML()
+        # Simple Modification
+        else:
+            self.ArticleList[article].setShortText(listInfo[1])
+            self.ArticleList[article].setThumbnail(listInfo[2])
+            self.ArticleList[article].setText(listInfo[3])
         
+        self.refreshHome()
+    
+    def refreshHome(self):
+        
+        xml = self.generateXML()
+       
+        if self.debug:
+            print(xml.decode())
+        
+        try:
+            f = open("../Home.xml", "w", encoding="utf-8")
+            f.write(xml.decode())
+            f.close()
+        except:
+            print("[Error] in XMLManager, file couldn't be opened !")
+
+    def generateXML(self):
+        
+        """
+        Create the XML File
+        """
+        document = Document()
+        
+        home = document.createElement("SmartCruizerData")
+        document.appendChild(home)
+        
+        for element in self.ArticleList.values():
+            
+            Article = document.createElement("Article")
+            home.appendChild(Article)
+            
+            """
+            Heading
+            """
+            heading = document.createElement("Heading")
+            Article.appendChild(heading)
+            
+            headingValue = document.createTextNode(element.getHeading())
+            heading.appendChild(headingValue)
+            
+            """
+            ShortText
+            """
+            shortText = document.createElement("ShortText")
+            Article.appendChild(shortText)
+            
+            shortTextValue = document.createTextNode(element.getShortText())
+            shortText.appendChild(shortTextValue)
+            
+            """
+            Thumbnail
+            """
+            Thumbnail = document.createElement("Thumbnail")
+            Article.appendChild(Thumbnail)
+            
+            ThumbnailValue = document.createTextNode(element.getThumbnail())
+            Thumbnail.appendChild(ThumbnailValue)
+            
+            """
+            Text
+            """
+            text = document.createElement("Text")
+            Article.appendChild(text)
+            
+            textValue = document.createTextNode(element.getText())
+            text.appendChild(textValue)
+            
+        return document.toprettyxml(indent="", encoding="utf-8")
+    
+    
     def Read(self):
-        print("reading")
+        try:
+            document = parse("../Home.xml")
+            
+            for element in document.getElementsByTagName("Article"):
+                listElement = []
+                
+                for i in range(1,8,2):
+                    try:
+                        listElement.append(element.childNodes[i].firstChild.nodeValue)
+                    except:
+                        listElement.append("")
+                
+                self.ArticleList[listElement[0]] = Article()
+                
+                self.ArticleList[listElement[0]].setHeading(listElement[0])
+                self.ArticleList[listElement[0]].setShortText(listElement[1])
+                self.ArticleList[listElement[0]].setThumbnail(listElement[2])
+                self.ArticleList[listElement[0]].setText(listElement[3])
+            
+        except:
+            pass
         
-    def SaveXML(self):
-        print("save XML")
-        
-    def getText(self, article, title):
-        print("hello")
