@@ -16,6 +16,10 @@ class GUI(threading.Thread):
         threading.Thread.__init__(self)
         self.setName("GUI")
         
+        self.start()
+        
+    def run(self):
+        
         self.fenetre = Tk()
         self.fenetre.title("RehaApp")
         self.fenetre.geometry("600x450")
@@ -26,10 +30,6 @@ class GUI(threading.Thread):
         self.initCategorie()
         self.initText()
         self.initCommand()
-        
-        self.start()
-        
-    def run(self):
         
         self.fenetre.mainloop()
         
