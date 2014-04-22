@@ -10,7 +10,10 @@ from UserInterface.XMLManager import XMLManager
 
 if __name__ == '__main__':
     
+    debug = False
+    
     myManager = XMLManager()
     myInterface = GUI(myManager)
     
-    os.system("pause")
+    if debug == True:
+        os.system("pause")

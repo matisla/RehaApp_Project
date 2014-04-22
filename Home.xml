@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SmartCruizerData>
 <Article>
-<Heading>MultiLines</Heading>
-<ShortText>MultiLines</ShortText>
-<Thumbnail>MultiLines</Thumbnail>
-<Text>MultiLines
-MultiLines
-MultiLines
-MultiLines
-MultiLines
-</Text>
-</Article>
-<Article>
 <Heading>Special Char</Heading>
 <ShortText></ShortText>
 <Thumbnail>&lt;&gt;&lt;/&gt;</Thumbnail>
@@ -19,9 +8,19 @@ MultiLines
 </Text>
 </Article>
 <Article>
+<Heading>MultiLines</Heading>
+<ShortText>MultiLines</ShortText>
+<Thumbnail>MultiLines</Thumbnail>
+<Text>MultiLines
+MultiLines
+MultiLines
+
+</Text>
+</Article>
+<Article>
 <Heading>Ausbildung zum FaMI</Heading>
 <ShortText>Attraktivere Ausbildungen durch mehr Praxisbezug der FaMIs.</ShortText>
 <Thumbnail>http://85.25.246.142/dhbw/HomeContent/AusbildungTeaser.jpg</Thumbnail>
-<Text>Unsere Ausbildung zur/zum "Fachangestellten für Medien und Informationsdienste FR Bibliothek" ist mit fünf neuen Teilnehmerinnen und Teilnehmern im Januar gestartet. Mit der Übernahme der Stadtbibliothek Bad Wildbad durch das BFW Bad Wildbad hat diese Ausbildung weiter an Attraktivität gewonnen. Das zeigt auch die Begeisterung unserer TeilnehmerInnen. Erste Veranstaltungen in  der Bibliothek u.a. für Kinder bringen viel Spaß für alle Beteiligten. Wir erleben hier eine ideale Verbindung von beruflicher Realität und Motivation.Guten Zuspruch findet der neu geordnete Beruf des "Technischen Produktdesigners". Auch in diesem Feld werden wir Ihnen in naher Zukunft eine vielversprechende Kombination mit einem Unternehmen im Bereich hochwertiger Konstruktion von Hochdruckreinigern für industrielle Zwecke bieten können. Wir sind sicher, dass wir damit die wachsenden Integrationschancen in diesem Berufsfeld weiter erhöhen werden. In Kombination mit unseren modularen Qualifizierungen F.a.mo.s. eröffnet sich in diesem zukunftsträchtigen Feld der Konstruktion ein breites Spektrum von Qualifizierungswegen.Wir freuen uns über Ihre Anfragen und schicken Ihnen gerne weitere Informationen zu.</Text>
+<Text>Unsere Ausbildung zur/zum &quot;Fachangestellten für Medien und Informationsdienste FR Bibliothek&quot; ist mit fünf neuen Teilnehmerinnen und Teilnehmern im Januar gestartet. Mit der Übernahme der Stadtbibliothek Bad Wildbad durch das BFW Bad Wildbad hat diese Ausbildung weiter an Attraktivität gewonnen. Das zeigt auch die Begeisterung unserer TeilnehmerInnen. Erste Veranstaltungen in  der Bibliothek u.a. für Kinder bringen viel Spaß für alle Beteiligten. Wir erleben hier eine ideale Verbindung von beruflicher Realität und Motivation.Guten Zuspruch findet der neu geordnete Beruf des &quot;Technischen Produktdesigners&quot;. Auch in diesem Feld werden wir Ihnen in naher Zukunft eine vielversprechende Kombination mit einem Unternehmen im Bereich hochwertiger Konstruktion von Hochdruckreinigern für industrielle Zwecke bieten können. Wir sind sicher, dass wir damit die wachsenden Integrationschancen in diesem Berufsfeld weiter erhöhen werden. In Kombination mit unseren modularen Qualifizierungen F.a.mo.s. eröffnet sich in diesem zukunftsträchtigen Feld der Konstruktion ein breites Spektrum von Qualifizierungswegen.Wir freuen uns über Ihre Anfragen und schicken Ihnen gerne weitere Informationen zu.</Text>
 </Article>
 </SmartCruizerData>

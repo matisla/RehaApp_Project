@@ -6,7 +6,6 @@ Created on 11 avr. 2014
 
 from xml.dom.minidom import Document, parse
 from Article import Article
-from test.test_minidom import MinidomTest
 
 class XMLManager():
     '''
@@ -76,12 +75,15 @@ class XMLManager():
             return True
         
         # Simple Modification
-        else:
+        elif article != "":
             self.ArticleList[article].setShortText(listInfo[1])
             self.ArticleList[article].setThumbnail(listInfo[2])
             self.ArticleList[article].setText(listInfo[3])
             
             self.refreshHome()
+            return True
+        
+        else:
             return True
             
     def refreshHome(self):
@@ -94,10 +96,13 @@ class XMLManager():
         try:
             f = open("../Home.xml", "w", encoding="utf-8")
             f.write(xml.decode())
-            f.close()
+            
         except:
             print("[Error] in XMLManager, file couldn't be opened !")
-
+        
+        finally:
+            f.close()
+            
     def generateXML(self):
         
         """

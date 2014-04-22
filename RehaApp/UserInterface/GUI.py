@@ -44,9 +44,7 @@ class GUI(threading.Thread):
         empty = Label(self.logbox, width=11)
         empty.pack(side="left")
         
-        self.varLog = StringVar()
-        self.varLog.set("Welcome to RehaApp")
-        self.log = Label(self.logbox, textvariable=self.varLog, justify="left")
+        self.log = Label(self.logbox, text = "Welcome to RehaApp", justify="left")
         self.log.pack(side="left")
     
     def initArticle(self):
@@ -94,8 +92,7 @@ class GUI(threading.Thread):
         self.labHeading = Label(box, anchor="w", text="Heading", width=10)
         self.labHeading.pack(side="left", expand=False, anchor="w")
         
-        self.varHeading = StringVar()
-        self.heading = Entry(box, textvariable=self.varHeading)
+        self.heading = Entry(box)
         self.heading.pack(side="right", expand=True, fill="x")
         
     def initThumbnail(self, box):
@@ -106,8 +103,7 @@ class GUI(threading.Thread):
         self.labThumbnail = Label(box, anchor="w", text="Thumbnail", width=10)
         self.labThumbnail.pack(side="left", expand=False, anchor="w")
         
-        self.varThumbnail = StringVar()
-        self.thumbnail = Entry(box, textvariable=self.varThumbnail)
+        self.thumbnail = Entry(box)
         self.thumbnail.pack(side="right", expand=True, fill="x")
         
     def initShortText(self, box):
@@ -118,8 +114,7 @@ class GUI(threading.Thread):
         self.labShortText = Label(box, anchor="w", text="ShortText", width=10)
         self.labShortText.pack(side="left", expand=False, anchor="w")
         
-        self.varShortText = StringVar()
-        self.shortText = Entry(box, textvariable=self.varShortText)
+        self.shortText = Entry(box)
         self.shortText.pack(side="right", expand=True, fill="x")
             
     def initText(self):
@@ -136,7 +131,6 @@ class GUI(threading.Thread):
         self.scrollbar = Scrollbar(self.textbox)
         self.scrollbar.pack(side="right", fill="y")
         
-        self.varText = StringVar()
         self.text = Text(self.textbox, wrap="word", width=60, height=10)
         self.text.config(yscrollcommand=self.scrollbar.set)
         self.text.pack(side="left", expand=True, fill="both")
@@ -189,14 +183,14 @@ class GUI(threading.Thread):
                 
     def New(self):
         self.ClearAll()
-        self.varLog.set("do not use an existant Heading")
+        self.log.configure(text = "do not use an existant Heading")
         
     def Remove(self):
         if self.Article.cget("value") != "":
             article = self.Article.cget("value")
             self.Manager.rmArticle(article)
             
-            self.varLog.set('the Article "%s" has been removed' %(article))
+            self.log.configure(text = 'the Article "%s" has been removed' %(article))
             self.Refresh()
             self.ClearAll()
             
@@ -214,11 +208,11 @@ class GUI(threading.Thread):
             if self.Manager.saveArticle(article, listInfo):
                 self.Refresh()
                 self.Article.configure(value=self.heading.get())
-                self.varLog.set('the Article "%s" has been saved succesfully' %(listInfo[0]))
+                self.log.configure(text = 'the Article "%s" has been saved succesfully' %(listInfo[0]))
                 
             else:
                 self.heading.focus()
-                self.varLog.set("[Error] this Article Already exists")
+                self.log.configure(text = "[Error] this Article Already exists")
             
         else:
             pass
