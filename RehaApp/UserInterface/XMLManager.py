@@ -94,7 +94,7 @@ class XMLManager():
             print(xml.decode())
         
         try:
-            f = open("../Home.xml", "w", encoding="utf-8")
+            f = open("Home.xml", "w", encoding="utf-8")
             f.write(xml.decode())
             
         except:
@@ -159,7 +159,7 @@ class XMLManager():
     
     def Read(self):
         try:
-            document = parse("../Home.xml")
+            document = parse("Home.xml")
             
             for element in document.getElementsByTagName("Article"):
                 listElement = []

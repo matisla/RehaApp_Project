@@ -7,11 +7,14 @@ from getpass import getpass
 
 class GUI(threading.Thread):
     
-    def __init__(self, manag, Debug=False):
+    def __init__(self, manag, password="rehaapp", Debug=False):
         
         self.debug = Debug
         self.Manager = manag
-        self.pw = False
+        
+        self.tryIncrement = 1
+        self.password = password
+        self.login = False
         
         self.ArticleList = self.Manager.getAllArticle()
         
@@ -22,68 +25,87 @@ class GUI(threading.Thread):
         
     def run(self):
         
-        self.login()
+        while self.login is False:
             
-        if self.pw:
+            if self.debug is False:
+                self.initLogin()
+                
+                if self.login is False:
+                    break
+            else:
+                self.login = True
+             
+            if self.login:
+                self.initApp()
             
-            self.fenetre = Tk()
-            self.fenetre.title("RehaApp")
-            self.fenetre.geometry("600x450")
-            self.fenetre.minsize(450,450)
-            
-            #self.initLogo()
-            self.initLog()
-            self.initArticle()
-            self.initCategorie()
-            self.initText()
-            self.initCommand()
-            
-            self.fenetre.mainloop()
             
     
-    def login(self):
+    def initLogin(self):
+            
+        self.fenetre = Tk()
+        self.fenetre.title("RehaApp Login")
+        self.fenetre.minsize(300,200)
+    
+        self.initLogo()
         
-        increment = 0
+        self.pwLab = Label(self.fenetre, anchor="e", text="Password: ", width=8)
+        self.pwLab.pack(side="left", padx=10)
         
-        while self.pw is False and increment < 3:
-            
-            self.pwFrame = Tk()
-            
-            self.pwLab = Label(self.pwFrame, anchor="w", text="Password: ", width=10)
-            self.pwLab.pack(side="left")
-            
-            self.pwEntry = Entry(self.pwFrame,  show="*")
-            self.pwEntry.bind("<Return>", self.testPW)
-            self.pwEntry.pack(side="right", expand=True, fill="both")
-            self.pwEntry.focus()
-            
-            self.pwFrame.mainloop()
-            
-            increment = increment +1
+        self.pwEntry = Entry(self.fenetre,  show="*")
+        self.pwEntry.bind("<Return>", self.testPW)
+        self.pwEntry.pack(side="right", expand=True, fill="x", padx=10)
+        self.pwEntry.focus()
+        
+        self.fenetre.mainloop()
         
     def testPW(self, event):
-        password = self.pwEntry.get()
         
-        if password == "rehaapp":
-            self.pw = True
-        else:
-            self.pw = False
+        if self.pwEntry.get() == self.password:
+            self.login = True
+            self.fenetre.destroy()
+        
+        elif self.tryIncrement < 3:
+            self.login = False
+            self.tryIncrement += 1
+            self.pwEntry.delete(0, END)
+            self.pwEntry.focus()
             
-        self.pwFrame.destroy()
+        else:
+            self.login = False
+            self.fenetre.destroy()
+    
+    
+    def initApp(self):
+        self.fenetre = Tk()
+        self.fenetre.title("RehaApp")
+        self.fenetre.geometry("600x450")
+        self.fenetre.minsize(450,450)
         
+        self.initLogo()
+        self.initLog()
+        self.initArticle()
+        self.initCategorie()
+        self.initText()
+        self.initCommand()
+        
+        self.fenetre.mainloop()
+               
     def initLogo(self):
         
         logobox = Frame(self.fenetre)
-        logobox.pack(side="top")
+        logobox.pack(side="top", padx=10)
         
-        rehaAppLogo = PhotoImage(file="RehaApp.gif")
-        logo1 = Canvas(logobox, image=rehaAppLogo)
+        self.rehaAppLogo = PhotoImage(file="./RehaApp.gif")
+        logo1 = Label(logobox, image=self.rehaAppLogo)
         logo1.pack(side="left")
         
-        dhbwLogo = PhotoImage(file="DHBW.gif")
-        logo2 = Canvas(logobox, image=dhbwLogo)
-        logo2.pack(side="right")
+        self.titleLab = Label(logobox, text="RehaApp XML Editor")
+        self.titleLab.pack()
         
+        self.dhbwLogo = PhotoImage(file="./DHBW.gif")
+        logo2 = Label(logobox, image=self.dhbwLogo)
+        logo2.pack(side="right")
+            
     def initLog(self):
         
         """
@@ -215,6 +237,13 @@ class GUI(threading.Thread):
         self.btSave.config(command=lambda: self.Save())
         self.btSave.pack(side="right")
         
+        self.labEmpty4 = Label(self.cmdbox, text="", width=5)
+        self.labEmpty4.pack(side="right")
+        
+        self.btSave = Button(self.cmdbox, text="Logout", width=10)
+        self.btSave.config(command=lambda: self.logout())
+        self.btSave.pack(side="right")
+        
     
     def Selection(self):
         
@@ -288,6 +317,10 @@ class GUI(threading.Thread):
         self.shortText.delete(0,END)
         self.thumbnail.delete(0, END)
         self.text.delete("1.0", END)
-            
+        
+    def logout(self):
+        self.fenetre.destroy()
+        self.login = False
+        
 if __name__ == '__main__':
     test = GUI(Debug=True, manag=None)
