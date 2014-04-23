@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter.tix import *
 
 from XMLManager import XMLManager
+from getpass import getpass
 
 class GUI(threading.Thread):
     
@@ -10,6 +11,7 @@ class GUI(threading.Thread):
         
         self.debug = Debug
         self.Manager = manag
+        self.pw = False
         
         self.ArticleList = self.Manager.getAllArticle()
         
@@ -20,18 +22,53 @@ class GUI(threading.Thread):
         
     def run(self):
         
-        self.fenetre = Tk()
-        self.fenetre.title("RehaApp")
-        self.fenetre.geometry("600x450")
-        self.fenetre.minsize(450,450)
+        self.login()
+            
+        if self.pw:
+            
+            self.fenetre = Tk()
+            self.fenetre.title("RehaApp")
+            self.fenetre.geometry("600x450")
+            self.fenetre.minsize(450,450)
+                
+            self.initLog()
+            self.initArticle()
+            self.initCategorie()
+            self.initText()
+            self.initCommand()
+            
+            self.fenetre.mainloop()
+            
+    
+    def login(self):
         
-        self.initLog()
-        self.initArticle()
-        self.initCategorie()
-        self.initText()
-        self.initCommand()
+        increment = 0
         
-        self.fenetre.mainloop()
+        while self.pw is False and increment < 3:
+            
+            self.pwFrame = Tk()
+            
+            self.pwLab = Label(self.pwFrame, anchor="w", text="Password: ", width=10)
+            self.pwLab.pack(side="left")
+            
+            self.pwEntry = Entry(self.pwFrame,  show="*")
+            self.pwEntry.bind("<Return>", self.testPW)
+            self.pwEntry.pack(side="right", expand=True, fill="both")
+            self.pwEntry.focus()
+            
+            self.pwFrame.mainloop()
+            
+            increment = increment +1
+        
+    def testPW(self, event):
+        password = self.pwEntry.get()
+        
+        if password == "rehaapp":
+            self.pw = True
+        else:
+            self.pw = False
+            
+        self.pwFrame.destroy()
         
     def initLog(self):
         
