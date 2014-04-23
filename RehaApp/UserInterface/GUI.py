@@ -44,16 +44,19 @@ class GUI(threading.Thread):
             
         self.fenetre = Tk()
         self.fenetre.title("RehaApp Login")
-        self.fenetre.minsize(300,200)
+        self.fenetre.minsize(500,200)
     
         self.initLogo()
         
-        self.pwLab = Label(self.fenetre, anchor="e", text="Password: ", width=8)
-        self.pwLab.pack(side="left", padx=10)
+        self.pwbox = Frame(self.fenetre)
+        self.pwbox.pack(side="bottom", expand=True, fill="x", padx=20)
         
-        self.pwEntry = Entry(self.fenetre,  show="*")
+        self.pwLab = Label(self.pwbox, anchor="e", text="Password: ", width=8)
+        self.pwLab.pack(side="left", pady=20)
+        
+        self.pwEntry = Entry(self.pwbox,  show="*")
         self.pwEntry.bind("<Return>", self.testPW)
-        self.pwEntry.pack(side="right", expand=True, fill="x", padx=10)
+        self.pwEntry.pack(side="right", expand=True, fill="x")
         self.pwEntry.focus()
         
         self.fenetre.mainloop()
@@ -78,8 +81,8 @@ class GUI(threading.Thread):
     def initApp(self):
         self.fenetre = Tk()
         self.fenetre.title("RehaApp")
-        self.fenetre.geometry("600x450")
-        self.fenetre.minsize(450,450)
+        self.fenetre.geometry("600x550")
+        self.fenetre.minsize(600,550)
         
         self.initLogo()
         self.initLog()
@@ -93,14 +96,14 @@ class GUI(threading.Thread):
     def initLogo(self):
         
         logobox = Frame(self.fenetre)
-        logobox.pack(side="top", padx=10)
+        logobox.pack(side="top", expand=True, fill="x", padx=20)
         
         self.rehaAppLogo = PhotoImage(file="./RehaApp.gif")
         logo1 = Label(logobox, image=self.rehaAppLogo)
         logo1.pack(side="left")
         
         self.titleLab = Label(logobox, text="RehaApp XML Editor")
-        self.titleLab.pack()
+        self.titleLab.pack(side="left", expand=True, fill="x")
         
         self.dhbwLogo = PhotoImage(file="./DHBW.gif")
         logo2 = Label(logobox, image=self.dhbwLogo)
@@ -136,7 +139,7 @@ class GUI(threading.Thread):
             for x in self.ArticleList:
                 self.Article.insert(END, x)
         
-        self.Article.subwidget("label").configure(text="Article", width=10, anchor="w")
+        self.Article.subwidget("label").configure(text="Menu", width=10, anchor="w")
         
         
     def initCategorie(self):
@@ -162,7 +165,7 @@ class GUI(threading.Thread):
         """
         Heading
         """
-        self.labHeading = Label(box, anchor="w", text="Heading", width=10)
+        self.labHeading = Label(box, anchor="w", text="Titel", width=10)
         self.labHeading.pack(side="left", expand=False, anchor="w")
         
         self.heading = Entry(box)
@@ -173,7 +176,7 @@ class GUI(threading.Thread):
         """
         #Thumbnail
         """
-        self.labThumbnail = Label(box, anchor="w", text="Thumbnail", width=10)
+        self.labThumbnail = Label(box, anchor="w", text="Bild", width=10)
         self.labThumbnail.pack(side="left", expand=False, anchor="w")
         
         self.thumbnail = Entry(box)
@@ -184,7 +187,7 @@ class GUI(threading.Thread):
         """
         ShortText
         """
-        self.labShortText = Label(box, anchor="w", text="ShortText", width=10)
+        self.labShortText = Label(box, anchor="w", text="Beschriftung", width=10)
         self.labShortText.pack(side="left", expand=False, anchor="w")
         
         self.shortText = Entry(box)
@@ -198,7 +201,7 @@ class GUI(threading.Thread):
         self.textbox = Frame(self.fenetre)
         self.textbox.pack(expand=True, fill="both", padx=20, pady=10)
         
-        self.labMessage = Label(self.textbox, anchor="w", text="Message", width=10)
+        self.labMessage = Label(self.textbox, anchor="w", text="Text", width=10)
         self.labMessage.pack(side="left")
         
         self.scrollbar = Scrollbar(self.textbox)
@@ -219,21 +222,21 @@ class GUI(threading.Thread):
         self.labEmpty = Label(self.cmdbox, text="", width=10)
         self.labEmpty.pack(side="left")
         
-        self.btNew = Button(self.cmdbox, text="New", width=10)
+        self.btNew = Button(self.cmdbox, text="Neuer Article", width=10)
         self.btNew.config(command=lambda: self.New())
         self.btNew.pack(side="left")
         
         self.labEmpty2 = Label(self.cmdbox, text="", width=5)
         self.labEmpty2.pack(side="left")
         
-        self.btRemove  = Button(self.cmdbox, text="Remove", width=10)
+        self.btRemove  = Button(self.cmdbox, text="Loeschen", width=10)
         self.btRemove.config(command=lambda: self.Remove())
         self.btRemove.pack(side="left")
         
         self.labEmpty3 = Label(self.cmdbox, text="", width=5)
         self.labEmpty3.pack(side="left")
         
-        self.btSave = Button(self.cmdbox, text="Save", width=10)
+        self.btSave = Button(self.cmdbox, text="Bestaetigen", width=10)
         self.btSave.config(command=lambda: self.Save())
         self.btSave.pack(side="right")
         

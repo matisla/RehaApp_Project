@@ -11,7 +11,7 @@ from UserInterface.XMLManager import XMLManager
 if __name__ == '__main__':
     
     myManager = XMLManager()
-    myInterface = GUI(myManager, Debug=False)
+    myInterface = GUI(myManager, Debug=True)
     
 
     #os.system("pause")
