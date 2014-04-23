@@ -8,11 +8,9 @@ import os
 from UserInterface.GUI import GUI
 from UserInterface.XMLManager import XMLManager
 
-from getpass import getpass
-
 if __name__ == '__main__':
     
-    debug = False
+    debug = True
         
     myManager = XMLManager()
     myInterface = GUI(myManager)

@@ -30,7 +30,8 @@ class GUI(threading.Thread):
             self.fenetre.title("RehaApp")
             self.fenetre.geometry("600x450")
             self.fenetre.minsize(450,450)
-                
+            
+            #self.initLogo()
             self.initLog()
             self.initArticle()
             self.initCategorie()
@@ -69,6 +70,19 @@ class GUI(threading.Thread):
             self.pw = False
             
         self.pwFrame.destroy()
+        
+    def initLogo(self):
+        
+        logobox = Frame(self.fenetre)
+        logobox.pack(side="top")
+        
+        rehaAppLogo = PhotoImage(file="RehaApp.gif")
+        logo1 = Canvas(logobox, image=rehaAppLogo)
+        logo1.pack(side="left")
+        
+        dhbwLogo = PhotoImage(file="DHBW.gif")
+        logo2 = Canvas(logobox, image=dhbwLogo)
+        logo2.pack(side="right")
         
     def initLog(self):
         
