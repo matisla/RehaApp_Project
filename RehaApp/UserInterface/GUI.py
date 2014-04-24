@@ -95,18 +95,18 @@ class GUI(threading.Thread):
                
     def initLogo(self):
         
-        logobox = Frame(self.fenetre)
-        logobox.pack(side="top", expand=True, fill="x", padx=20)
+        logobox = Frame(self.fenetre, bg="white")
+        logobox.pack(side="top", expand=True, fill="x", padx=20, pady=10)
         
         self.rehaAppLogo = PhotoImage(file="./RehaApp.gif")
-        logo1 = Label(logobox, image=self.rehaAppLogo)
+        logo1 = Label(logobox, image=self.rehaAppLogo, bg="white")
         logo1.pack(side="left")
         
-        self.titleLab = Label(logobox, text="RehaApp XML Editor")
+        self.titleLab = Label(logobox, text="RehaApp XML Editor", bg="white")
         self.titleLab.pack(side="left", expand=True, fill="x")
         
         self.dhbwLogo = PhotoImage(file="./DHBW.gif")
-        logo2 = Label(logobox, image=self.dhbwLogo)
+        logo2 = Label(logobox, image=self.dhbwLogo, bg="white")
         logo2.pack(side="right")
             
     def initLog(self):
@@ -282,8 +282,8 @@ class GUI(threading.Thread):
             listInfo = []
             
             listInfo.append(self.heading.get())
-            listInfo.append(self.thumbnail.get())
             listInfo.append(self.shortText.get())
+            listInfo.append(self.thumbnail.get())
             listInfo.append(self.text.get("1.0", END))
             
             article = self.Article.cget("value")
