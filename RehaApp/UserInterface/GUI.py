@@ -204,11 +204,12 @@ class GUI(threading.Thread):
         self.labMessage = Label(self.textbox, anchor="w", text="Text", width=10)
         self.labMessage.pack(side="left")
         
-        self.scrollbar = Scrollbar(self.textbox)
+        self.scrollbar = Scrollbar(self.textbox, jump=1)
         self.scrollbar.pack(side="right", fill="y")
         
         self.text = Text(self.textbox, wrap="word", width=60, height=10)
         self.text.config(yscrollcommand=self.scrollbar.set)
+        self.scrollbar.config(command=self.text.yview)
         self.text.pack(side="left", expand=True, fill="both")
     
     def initCommand(self):
