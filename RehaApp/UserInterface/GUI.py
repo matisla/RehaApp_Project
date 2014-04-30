@@ -132,12 +132,9 @@ class GUI(threading.Thread):
         self.Article.configure(command=lambda x: self.Selection())
         self.Article.pack(anchor="w", expand=True, fill="x")
         
-        if self.ArticleList != []:
-            for x in self.ArticleList:
-                self.Article.insert(END, x)
-        
         self.Article.subwidget("label").configure(text="Menu", width=10, anchor="w")
         
+        self.Refresh()
         
     def initCategorie(self):
         
@@ -184,7 +181,7 @@ class GUI(threading.Thread):
         """
         ShortText
         """
-        self.labShortText = Label(box, anchor="w", text="Beschriftung", width=10)
+        self.labShortText = Label(box, anchor="w", text="Beschreibung", width=10)
         self.labShortText.pack(side="left", expand=False, anchor="w")
         
         self.shortText = Entry(box)
