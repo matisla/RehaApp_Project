@@ -11,3 +11,4 @@ if __name__ == '__main__':
     
     myManager = XMLManager()
     myInterface = GUI(myManager)
+    

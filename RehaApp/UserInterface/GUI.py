@@ -44,6 +44,9 @@ class GUI(threading.Thread):
         self.fenetre.minsize(500,200)
     
         self.initLogo()
+        self.initLog()
+        
+        self.log.configure(text="Es bleiben Ihnen noch %s Versuche" %(4-self.tryIncrement))
         
         self.pwbox = Frame(self.fenetre)
         self.pwbox.pack(side="bottom", expand=True, fill="x", padx=20)
@@ -70,6 +73,11 @@ class GUI(threading.Thread):
             self.pwEntry.delete(0, END)
             self.pwEntry.focus()
             
+            if self.tryIncrement == 3:
+                self.log.configure(text="Es bleibt Ihnen noch %s Versuch" %(4-self.tryIncrement))
+            else:
+                self.log.configure(text="Es bleiben Ihnen noch %s Versuche" %(4-self.tryIncrement))
+                
         else:
             self.login = False
             self.fenetre.destroy()
@@ -112,12 +120,12 @@ class GUI(threading.Thread):
         Log
         """
         self.logbox = Frame(self.fenetre)
-        self.logbox.pack(side="top", expand=True, fill="x", padx=10, pady=10)
+        self.logbox.pack(side="top", expand=True, fill="x", padx=20, pady=10)
         
-        empty = Label(self.logbox, width=11)
+        empty = Label(self.logbox, width=12)
         empty.pack(side="left")
         
-        self.log = Label(self.logbox, text = "Welcome to RehaApp", justify="left")
+        self.log = Label(self.logbox, text = "Willkommen im RehaApp Editor", justify="left")
         self.log.pack(side="left")
     
     def initArticle(self):
@@ -132,7 +140,7 @@ class GUI(threading.Thread):
         self.Article.configure(command=lambda x: self.Selection())
         self.Article.pack(anchor="w", expand=True, fill="x")
         
-        self.Article.subwidget("label").configure(text="Menu", width=10, anchor="w")
+        self.Article.subwidget("label").configure(text="Menu", width=12, anchor="w")
         
         self.Refresh()
         
@@ -159,7 +167,7 @@ class GUI(threading.Thread):
         """
         Heading
         """
-        self.labHeading = Label(box, anchor="w", text="Titel", width=10)
+        self.labHeading = Label(box, anchor="w", text="Titel", width=12)
         self.labHeading.pack(side="left", expand=False, anchor="w")
         
         self.heading = Entry(box)
@@ -170,7 +178,7 @@ class GUI(threading.Thread):
         """
         #Thumbnail
         """
-        self.labThumbnail = Label(box, anchor="w", text="Bild", width=10)
+        self.labThumbnail = Label(box, anchor="w", text="Bild", width=12)
         self.labThumbnail.pack(side="left", expand=False, anchor="w")
         
         self.thumbnail = Entry(box)
@@ -181,7 +189,7 @@ class GUI(threading.Thread):
         """
         ShortText
         """
-        self.labShortText = Label(box, anchor="w", text="Beschreibung", width=10)
+        self.labShortText = Label(box, anchor="w", text="Beschreibung", width=12)
         self.labShortText.pack(side="left", expand=False, anchor="w")
         
         self.shortText = Entry(box)
@@ -195,7 +203,7 @@ class GUI(threading.Thread):
         self.textbox = Frame(self.fenetre)
         self.textbox.pack(expand=True, fill="both", padx=20, pady=10)
         
-        self.labMessage = Label(self.textbox, anchor="w", text="Text", width=10)
+        self.labMessage = Label(self.textbox, anchor="w", text="Text", width=12)
         self.labMessage.pack(side="left")
         
         self.scrollbar = Scrollbar(self.textbox, jump=1)
@@ -214,10 +222,10 @@ class GUI(threading.Thread):
         self.cmdbox = Frame(self.fenetre)
         self.cmdbox.pack(side="bottom", expand=True, fill="x", padx=20, pady=20)
         
-        self.labEmpty = Label(self.cmdbox, text="", width=10)
+        self.labEmpty = Label(self.cmdbox, text="", width=12)
         self.labEmpty.pack(side="left")
         
-        self.btNew = Button(self.cmdbox, text="Neuer Article", width=10)
+        self.btNew = Button(self.cmdbox, text="Neuer Artikel", width=10)
         self.btNew.config(command=lambda: self.New())
         self.btNew.pack(side="left")
         
@@ -261,14 +269,14 @@ class GUI(threading.Thread):
                 
     def New(self):
         self.ClearAll()
-        self.log.configure(text = "do not use an existant Heading")
+        self.log.configure(text = "Benutzen Sie nicht ein schon existierenden Titel")
         
     def Remove(self):
         if self.Article.cget("value") != "":
             article = self.Article.cget("value")
             self.Manager.rmArticle(article)
             
-            self.log.configure(text = 'the Article "%s" has been removed' %(article))
+            self.log.configure(text = 'Der Artikel "%s" wurde geloescht' %(article))
             self.Refresh()
             self.ClearAll()
             
@@ -286,11 +294,11 @@ class GUI(threading.Thread):
             if self.Manager.saveArticle(article, listInfo):
                 self.Refresh()
                 self.Article.configure(value=self.heading.get())
-                self.log.configure(text = 'the Article "%s" has been saved succesfully' %(listInfo[0]))
+                self.log.configure(text = 'Der Artikel "%s" wurde gespeichert' %(listInfo[0]))
                 
             else:
                 self.heading.focus()
-                self.log.configure(text = "[Error] this Article Already exists")
+                self.log.configure(text = '[Error] Der Artikel "%s" wurde nicht gespeichert' %(listInfo[0]))
             
         else:
             pass
