@@ -9,7 +9,6 @@ class GUI(threading.Thread):
     
     def __init__(self, manag, password="rehaapp", Debug=False):
         
-        self.debug = Debug
         self.Manager = manag
         
         self.tryIncrement = 1
@@ -26,12 +25,10 @@ class GUI(threading.Thread):
     def run(self):
         
         while self.login is False:
-            
-            if self.debug is False:
-                self.initLogin()
-                
-                if self.login is False:
-                    break
+
+            self.initLogin()
+            if self.login is False:
+                break
             else:
                 self.login = True
              
