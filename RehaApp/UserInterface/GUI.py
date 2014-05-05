@@ -270,6 +270,7 @@ class GUI(threading.Thread):
     def New(self):
         self.ClearAll()
         self.log.configure(text = "Benutzen Sie nicht ein schon existierenden Titel")
+        self.heading.focus()
         
     def Remove(self):
         if self.Article.cget("value") != "":
